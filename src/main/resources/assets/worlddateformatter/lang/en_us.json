@@ -1,0 +1,8 @@
+{
+  "text.worlddateformatter.config.title": "World Date Formatter Config",
+  "text.worlddateformatter.config.category.general": "General",
+  "text.worlddateformatter.config.option.isenabled": "Mod enabled",
+  "text.worlddateformatter.config.option.format": "Format",
+  "text.worlddateformatter.config.option.format.tooltip": "Preview: %s\nPlease refer to the Java SimpleDateFormat class for further details.",
+  "text.worlddateformatter.config.option.format.error": "Invalid format. Example: %s"
+}

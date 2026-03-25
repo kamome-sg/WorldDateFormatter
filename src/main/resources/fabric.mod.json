@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "worlddateformatter",
+  "version": "${version}",
+  "name": "World Date Formatter",
+  "description": "Custom date format for the last played date.",
+  "authors": ["Seagulll"],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/worlddateformatter/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.github.seagulll.worlddateformatter.WorlddateformatterClient"
+    ],
+    "main": [
+      "com.github.seagulll.worlddateformatter.Worlddateformatter"
+    ],
+    "modmenu": [
+      "com.github.seagulll.worlddateformatter.integration.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "worlddateformatter.mixins.json",
+    {
+      "config": "worlddateformatter.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  },
+  "suggests": {
+    "modmenu": "*",
+    "cloth-config2": "*"
+  }
+}

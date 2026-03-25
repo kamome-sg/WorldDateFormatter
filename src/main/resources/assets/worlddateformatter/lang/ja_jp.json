@@ -1,0 +1,8 @@
+{
+  "text.worlddateformatter.config.title": "World Date Formatter 設定",
+  "text.worlddateformatter.config.category.general": "一般",
+  "text.worlddateformatter.config.option.isenabled": "Modの有効化",
+  "text.worlddateformatter.config.option.format": "日時フォーマット",
+  "text.worlddateformatter.config.option.format.tooltip": "プレビュー: %s\n詳しくはJavaのSimpleDateFormatクラスを参照してください。",
+  "text.worlddateformatter.config.option.format.error": "無効な形式です。例: %s"
+}
