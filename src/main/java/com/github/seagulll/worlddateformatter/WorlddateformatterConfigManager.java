@@ -2,13 +2,14 @@ package com.github.seagulll.worlddateformatter;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
 public class WorlddateformatterConfigManager {
-    private static final File FILE = new File(net.fabricmc.loader.api.FabricLoader.getInstance().getConfigDir().toFile(), Worlddateformatter.MOD_ID + ".json");
+    private static final File FILE = new File(FabricLoader.getInstance().getConfigDir().toFile(), Worlddateformatter.MOD_ID + ".json");
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static WorlddateformatterConfig config = new WorlddateformatterConfig();
 

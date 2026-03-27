@@ -1,9 +1,9 @@
 package com.github.seagulll.worlddateformatter.mixin;
 
 import com.github.seagulll.worlddateformatter.Util;
+import com.github.seagulll.worlddateformatter.WorlddateformatterConfig;
 import com.github.seagulll.worlddateformatter.WorlddateformatterConfigManager;
-import net.minecraft.client.gui.screen.world.WorldListWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.screens.worldselection.WorldSelectionList;
 import net.minecraft.world.level.storage.LevelSummary;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,23 +15,28 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-@Mixin(WorldListWidget.WorldEntry.class)
+@Mixin(WorldSelectionList.WorldListEntry.class)
 public abstract class WorldEntryMixin {
-    @Shadow @Final LevelSummary level;
+    private static WorlddateformatterConfig config = WorlddateformatterConfigManager.config;
+    @Shadow
+    @Final
+    private LevelSummary summary;
 
-    @ModifyVariable(method = "<init>", at = @At("STORE"), ordinal = 1)
-    // コンストラクタ内のtext2を書き換え
-    private Text modifyText2(Text originalText2) {
-        if (!WorlddateformatterConfigManager.config.isEnabled()) return originalText2;
-        String string = level.getName();
-        long l = level.getLastPlayed();
-        if (l != -1L) {
-            ZonedDateTime dateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(l), ZoneId.systemDefault());
-            String dateTimeText = dateTime.format(DateTimeFormatter.ofPattern(Util.validateFormat(WorlddateformatterConfigManager.config.getFormat())));
-            if (!dateTimeText.isEmpty()) {
-                string += " (" + dateTimeText + ")";
-            }
+    @ModifyVariable(
+            slice = @Slice(
+                    from = @At(value = "INVOKE", target = "Ljava/time/format/DateTimeFormatter;format(Ljava/time/temporal/TemporalAccessor;)Ljava/lang/String;")
+            ),
+            method = "<init>", at = @At("STORE"), name = "levelIdAndDate"
+    )
+    private String modify(String originalLevelIdAndDate) {
+        if (!config.isEnabled()) return originalLevelIdAndDate;
+        String levelIdAndDate = summary.getLevelId();
+        long lastPlayed = summary.getLastPlayed();
+        ZonedDateTime lastPlayedTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(lastPlayed), ZoneId.systemDefault());
+        String lastPlayedTimeText = lastPlayedTime.format(DateTimeFormatter.ofPattern(Util.validateFormat(config.getFormat())));
+        if (!lastPlayedTimeText.isEmpty()) {
+            levelIdAndDate += " (" + lastPlayedTimeText + ")";
         }
-        return Text.literal(string).withColor(-8355712);
+        return levelIdAndDate;
     }
 }

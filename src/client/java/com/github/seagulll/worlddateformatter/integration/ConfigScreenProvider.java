@@ -3,40 +3,50 @@ package com.github.seagulll.worlddateformatter.integration;
 import com.github.seagulll.worlddateformatter.Util;
 import com.github.seagulll.worlddateformatter.WorlddateformatterConfig;
 import com.github.seagulll.worlddateformatter.WorlddateformatterConfigManager;
-import me.shedaniel.clothconfig2.api.ConfigBuilder;
-import me.shedaniel.clothconfig2.api.ConfigCategory;
-import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
+import dev.isxander.yacl3.api.*;
+import dev.isxander.yacl3.api.controller.StringControllerBuilder;
+import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 public class ConfigScreenProvider {
     public static Screen create(Screen parent) {
-        ConfigBuilder builder = ConfigBuilder.create().setParentScreen(parent).setTitle(Text.translatable("text.worlddateformatter.config.title"));
-        ConfigEntryBuilder entryBuilder = builder.entryBuilder();
-        ConfigCategory general = builder.getOrCreateCategory(Text.translatable("text.worlddateformatter.config.category.general"));
+        WorlddateformatterConfig config = WorlddateformatterConfigManager.config;
+        String defaultFormat = WorlddateformatterConfig.DEFAULT_FORMAT;
         ZonedDateTime now = ZonedDateTime.now();
 
-        general.addEntry(
-                entryBuilder.startBooleanToggle(Text.translatable("text.worlddateformatter.config.option.isenabled"), WorlddateformatterConfigManager.config.isEnabled())
-                        .setDefaultValue(true)
-                        .setSaveConsumer(WorlddateformatterConfigManager.config::setEnabled)
-                        .build()
-        );
-        general.addEntry(
-                entryBuilder.startStrField(Text.translatable("text.worlddateformatter.config.option.format"), WorlddateformatterConfigManager.config.getFormat())
-                        .setDefaultValue(WorlddateformatterConfig.DEFAULT_FORMAT)
-                        .setTooltipSupplier(value -> {
-                            String preview = Util.isValidFormat(value) ? now.format(DateTimeFormatter.ofPattern(value)) : "";
-                            return Optional.of(new Text[]{ Text.translatable("text.worlddateformatter.config.option.format.tooltip", preview) });
-                        })
-                        .setSaveConsumer(WorlddateformatterConfigManager.config::setFormat)
-                        .setErrorSupplier(value -> Util.isValidFormat(value) ? Optional.empty() : Optional.of(Text.translatable("text.worlddateformatter.config.option.format.error", WorlddateformatterConfig.DEFAULT_FORMAT)))
-                        .build()
-        );
-        return builder.build();
+        Option<String> format = Option.<String>createBuilder()
+                .name(Component.translatable("text.worlddateformatter.config.option.format"))
+                .description(value -> OptionDescription.of(Util.isValidFormat(value)
+                        ? Component.translatable("text.worlddateformatter.config.option.format.tooltip", now.format(DateTimeFormatter.ofPattern(value)))
+                        : Component.translatable("text.worlddateformatter.config.option.format.error", defaultFormat).withStyle(ChatFormatting.RED)))
+                .controller(StringControllerBuilder::create)
+                .binding(defaultFormat, config::getFormat, config::setFormat)
+                .build();
+        Option<Boolean> isEnabled = Option.<Boolean>createBuilder()
+                .name(Component.translatable("text.worlddateformatter.config.option.isenabled"))
+                .controller(TickBoxControllerBuilder::create)
+                .binding(true, config::isEnabled, config::setEnabled)
+                .addListener((option, _) -> {
+                    String pendingFormat = format.pendingValue();
+                    format.setAvailable(option.pendingValue());
+                    format.requestSet(pendingFormat);
+                })
+                .build();
+
+        return YetAnotherConfigLib.createBuilder()
+                .title(Component.translatable("text.worlddateformatter.config.title"))
+                .category(ConfigCategory.createBuilder()
+                        .name(Component.translatable("text.worlddateformatter.config.category.general"))
+                        .option(isEnabled)
+                        .option(format)
+                        .build())
+                .save(WorlddateformatterConfigManager::save)
+                .build()
+                .generateScreen(parent);
     }
 }

@@ -6,14 +6,12 @@ public class WorlddateformatterConfig {
     private boolean isEnabled = true;
     private String format = DEFAULT_FORMAT;
 
-    public void setEnabled(boolean enabled) {
-        isEnabled = enabled;
-        WorlddateformatterConfigManager.save();
+    public void setEnabled(boolean isEnabled) {
+        this.isEnabled = isEnabled;
     }
 
     public void setFormat(String format) {
         this.format = format;
-        WorlddateformatterConfigManager.save();
     }
 
     public boolean isEnabled() {

@@ -2,14 +2,15 @@ package com.github.seagulll.worlddateformatter.integration;
 
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
+import net.fabricmc.loader.api.FabricLoader;
 
 public class ModMenuIntegration implements ModMenuApi {
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        return isClothConfigLoaded() ? ConfigScreenProvider::create : null;
+        return isYACLLoaded() ? ConfigScreenProvider::create : null;
     }
 
-    private boolean isClothConfigLoaded() {
-        return net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("cloth-config2");
+    private boolean isYACLLoaded() {
+        return FabricLoader.getInstance().isModLoaded("yet_another_config_lib_v3");
     }
 }

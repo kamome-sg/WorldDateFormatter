@@ -3,6 +3,6 @@
   "text.worlddateformatter.config.category.general": "一般",
   "text.worlddateformatter.config.option.isenabled": "Modの有効化",
   "text.worlddateformatter.config.option.format": "日時フォーマット",
-  "text.worlddateformatter.config.option.format.tooltip": "プレビュー: %s\n詳しくはJavaのSimpleDateFormatクラスを参照してください。",
-  "text.worlddateformatter.config.option.format.error": "無効な形式です。例: %s"
+  "text.worlddateformatter.config.option.format.tooltip": "プレビュー: %s\n\n詳しくはJavaのSimpleDateFormatクラスを参照してください。",
+  "text.worlddateformatter.config.option.format.error": "無効な形式です。入力は無視され、デフォルト値が使用されます。\n\n例: %s"
 }
