@@ -17,7 +17,6 @@ import java.time.format.DateTimeFormatter;
 
 @Mixin(WorldSelectionList.WorldListEntry.class)
 public abstract class WorldEntryMixin {
-    private static WorlddateformatterConfig config = WorlddateformatterConfigManager.config;
     @Shadow
     @Final
     private LevelSummary summary;
@@ -29,6 +28,7 @@ public abstract class WorldEntryMixin {
             method = "<init>", at = @At("STORE"), name = "levelIdAndDate"
     )
     private String modify(String originalLevelIdAndDate) {
+        WorlddateformatterConfig config = WorlddateformatterConfigManager.config;
         if (!config.isEnabled()) return originalLevelIdAndDate;
         String levelIdAndDate = summary.getLevelId();
         long lastPlayed = summary.getLastPlayed();
