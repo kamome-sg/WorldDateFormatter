@@ -19,14 +19,9 @@ import java.time.format.DateTimeFormatter;
 public abstract class WorldEntryMixin {
     @Shadow
     @Final
-    private LevelSummary summary;
+    LevelSummary summary;
 
-    @ModifyVariable(
-            slice = @Slice(
-                    from = @At(value = "INVOKE", target = "Ljava/time/format/DateTimeFormatter;format(Ljava/time/temporal/TemporalAccessor;)Ljava/lang/String;")
-            ),
-            method = "<init>", at = @At("STORE"), name = "levelIdAndDate"
-    )
+    @ModifyVariable(method = "<init>", at = @At(value = "STORE", ordinal = 1), ordinal = 0)
     private String modify(String originalLevelIdAndDate) {
         WorlddateformatterConfig config = WorlddateformatterConfigManager.config;
         if (!config.isEnabled()) return originalLevelIdAndDate;

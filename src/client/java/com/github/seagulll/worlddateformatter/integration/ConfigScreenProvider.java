@@ -31,7 +31,7 @@ public class ConfigScreenProvider {
                 .name(Component.translatable("text.worlddateformatter.config.option.isenabled"))
                 .controller(TickBoxControllerBuilder::create)
                 .binding(true, config::isEnabled, config::setEnabled)
-                .addListener((option, _) -> {
+                .addListener((option, event) -> {
                     String pendingFormat = format.pendingValue();
                     format.setAvailable(option.pendingValue());
                     format.requestSet(pendingFormat);
