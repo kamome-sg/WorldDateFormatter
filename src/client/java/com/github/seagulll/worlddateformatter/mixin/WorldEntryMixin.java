@@ -21,21 +21,18 @@ public abstract class WorldEntryMixin {
     @Final
     private LevelSummary summary;
 
-    @ModifyVariable(
-            slice = @Slice(
-                    from = @At(value = "INVOKE", target = "Ljava/time/format/DateTimeFormatter;format(Ljava/time/temporal/TemporalAccessor;)Ljava/lang/String;")
-            ),
-            method = "<init>", at = @At("STORE"), name = "levelIdAndDate"
-    )
+    @ModifyVariable(method = "<init>", at = @At(value = "STORE", ordinal = 1), name = "levelIdAndDate")
     private String modify(String originalLevelIdAndDate) {
         WorlddateformatterConfig config = WorlddateformatterConfigManager.config;
         if (!config.isEnabled()) return originalLevelIdAndDate;
         String levelIdAndDate = summary.getLevelId();
         long lastPlayed = summary.getLastPlayed();
-        ZonedDateTime lastPlayedTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(lastPlayed), ZoneId.systemDefault());
-        String lastPlayedTimeText = lastPlayedTime.format(DateTimeFormatter.ofPattern(Util.validateFormat(config.getFormat())));
-        if (!lastPlayedTimeText.isEmpty()) {
-            levelIdAndDate += " (" + lastPlayedTimeText + ")";
+        if (lastPlayed != -1L) {
+            ZonedDateTime lastPlayedTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(lastPlayed), ZoneId.systemDefault());
+            String lastPlayedTimeText = lastPlayedTime.format(DateTimeFormatter.ofPattern(Util.validateFormat(config.getFormat())));
+            if (!lastPlayedTimeText.isEmpty()) {
+                levelIdAndDate += " (" + lastPlayedTimeText + ")";
+            }
         }
         return levelIdAndDate;
     }
