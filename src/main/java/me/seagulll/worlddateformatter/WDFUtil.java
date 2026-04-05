@@ -23,7 +23,7 @@ public final class WDFUtil {
     }
 
     public static DateTimeFormatter getFormatter(String format, String code) {
-        return DateTimeFormatter.ofPattern(validateFormat(format), WDFUtil.getLocale(code));
+        return DateTimeFormatter.ofPattern(validateFormat(format), getLocale(code));
     }
 
     public static Locale getLocale(String code) {
