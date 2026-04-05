@@ -3,7 +3,7 @@ plugins {
     id 'maven-publish'
 }
 
-version = project.mod_version
+version = project.mod_version + "+" + project.minecraft_version
 group = project.maven_group
 
 base {
@@ -11,14 +11,14 @@ base {
 }
 
 loom {
-    splitEnvironmentSourceSets()
+    // splitEnvironmentSourceSets()
 
-    mods {
-        "worlddateformatter" {
-            sourceSet sourceSets.main
-            sourceSet sourceSets.client
-        }
-    }
+    // mods {
+        // "worlddateformatter" {
+            // sourceSet sourceSets.main
+            // sourceSet sourceSets.client
+        // }
+    // }
 }
 
 
@@ -59,7 +59,8 @@ processResources {
     filesMatching("fabric.mod.json") {
         expand "version": project.version,
                 "minecraft_version": project.minecraft_version,
-                "loader_version": project.loader_version
+                "loader_version": project.loader_version,
+                "mod_sources": project.mod_sources
     }
 }
 

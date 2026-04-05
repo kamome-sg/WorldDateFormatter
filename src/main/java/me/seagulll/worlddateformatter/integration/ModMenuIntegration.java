@@ -1,4 +1,4 @@
-package com.github.seagulll.worlddateformatter.integration;
+package me.seagulll.worlddateformatter.integration;
 
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;

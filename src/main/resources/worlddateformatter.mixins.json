@@ -1,9 +1,10 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.github.seagulll.worlddateformatter.mixin",
+  "package": "me.seagulll.worlddateformatter.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [
+  "client": [
+    "WorldListEntryMixin"
   ],
   "injectors": {
     "defaultRequire": 1

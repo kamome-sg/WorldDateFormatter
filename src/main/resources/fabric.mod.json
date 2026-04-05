@@ -5,34 +5,31 @@
   "name": "World Date Formatter",
   "description": "Custom date format for the last played date.",
   "authors": ["Seagulll"],
-  "contact": {},
-  "license": "All-Rights-Reserved",
+  "contact": {
+    "sources": "${mod_sources}",
+    "homepage": "${mod_sources}",
+    "issues": "${mod_sources}/issues"
+  },
+  "license": "MIT",
   "icon": "assets/worlddateformatter/icon.png",
   "environment": "client",
   "entrypoints": {
     "client": [
-      "com.github.seagulll.worlddateformatter.WorlddateformatterClient"
-    ],
-    "main": [
-      "com.github.seagulll.worlddateformatter.Worlddateformatter"
+      "me.seagulll.worlddateformatter.WDF"
     ],
     "modmenu": [
-      "com.github.seagulll.worlddateformatter.integration.ModMenuIntegration"
+      "me.seagulll.worlddateformatter.integration.ModMenuIntegration"
     ]
   },
   "mixins": [
-    "worlddateformatter.mixins.json",
-    {
-      "config": "worlddateformatter.client.mixins.json",
-      "environment": "client"
-    }
+    "worlddateformatter.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric-api": "*",
     "minecraft": ">=${minecraft_version}"
   },
-  "suggests": {
+  "recommends": {
     "modmenu": "*",
     "yet_another_config_lib_v3": "*"
   }
