@@ -23,7 +23,7 @@ public class WDFConfigManager {
                 save();
             }
         } catch (Exception e) {
-            WDF.LOGGER.error("Failed to load config. Details: {}", String.valueOf(e));
+            WDF.LOGGER.error("Failed to load config", e);
         }
     }
 
@@ -33,7 +33,7 @@ public class WDFConfigManager {
             GSON.toJson(config, writer);
             writer.close();
         } catch (Exception e) {
-            WDF.LOGGER.error("Failed to save config. Details: {}", String.valueOf(e));
+            WDF.LOGGER.error("Failed to save config", e);
         }
     }
 }

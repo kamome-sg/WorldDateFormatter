@@ -28,7 +28,8 @@ public abstract class WorldListEntryMixin {
         long lastPlayed = summary.getLastPlayed();
         if (lastPlayed != -1L) {
             ZonedDateTime lastPlayedTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(lastPlayed), ZoneId.systemDefault());
-            String lastPlayedTimeText = lastPlayedTime.format(WDFUtil.getFormatter(config.getFormat(), config.getLocale()));
+            String lastPlayedTimeText = WDFUtil.safeFormat(lastPlayedTime, config.getFormat(), config.getLocale())
+                    .orElseGet(() -> WDFUtil.safeFormat(lastPlayedTime, WDFConfig.DEFAULT_FORMAT, WDFConfig.DEFAULT_LOCALE).orElse(""));
             if (!lastPlayedTimeText.isEmpty()) {
                 string += " (" + lastPlayedTimeText + ")";
             }

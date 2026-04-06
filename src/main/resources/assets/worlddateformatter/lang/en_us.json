@@ -3,8 +3,8 @@
   "text.worlddateformatter.config.category.general": "General",
   "text.worlddateformatter.config.option.isenabled": "Mod enabled",
   "text.worlddateformatter.config.option.format": "Format",
-  "text.worlddateformatter.config.option.format.tooltip": "Preview: %s\n\nPlease refer to the Java SimpleDateFormat class for further details.",
+  "text.worlddateformatter.config.option.format.tooltip": "Preview: %s\n\nPlease refer to the Java DateTimeFormatter class for further details.",
   "text.worlddateformatter.config.option.format.error": "Invalid format. Input will be ignored and default value will be used. \n\nExample: %s",
   "text.worlddateformatter.config.option.locale": "Locale",
-  "text.worlddateformatter.config.option.locale.tooltip": "Locale settings for displaying days of the week, etc."
+  "text.worlddateformatter.config.option.locale.tooltip": "Locale settings for displaying days of the week, etc. Some locales may not be supported by Java."
 }
