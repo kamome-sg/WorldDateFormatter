@@ -1,40 +1,41 @@
 package me.seagulll.worlddateformatter;
 
+import dev.isxander.yacl3.api.Option;
+import org.jspecify.annotations.NonNull;
+
+import java.time.DateTimeException;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.IllformedLocaleException;
 import java.util.Locale;
+import java.util.Optional;
 
 public final class WDFUtil {
     private WDFUtil() {
         throw new AssertionError();
     }
 
-    public static boolean isValidFormat(String format) {
+    public static Optional<String> safeFormat(@NonNull ZonedDateTime dateTime, String format, String localeCode) {
         try {
-            DateTimeFormatter.ofPattern(format);
-            return true;
-        }
-        catch (IllegalArgumentException e) {
-            return false;
+            return Optional.of(dateTime.format(DateTimeFormatter.ofPattern(format, codeToLocale(localeCode).orElse(Locale.US))));
+        } catch (IllegalArgumentException | DateTimeException e) {
+            return Optional.empty();
         }
     }
 
-    public static String validateFormat(String format) {
-        return isValidFormat(format) ? format : WDFConfig.DEFAULT_FORMAT;
-    }
-
-    public static DateTimeFormatter getFormatter(String format, String code) {
-        return DateTimeFormatter.ofPattern(validateFormat(format), getLocale(code));
-    }
-
-    public static Locale getLocale(String code) {
-        String[] parts = code.split("_", 2);
+    public static Optional<Locale> codeToLocale(@NonNull String localeCode) {
         try {
-            return new Locale.Builder()
-                    .setLanguageTag(parts[0] + "-" + parts[1].toUpperCase())
-                    .build();
+            return Optional.of(new Locale.Builder()
+                    .setLanguageTag(localeCode.replace("_", "-"))
+                    .build());
+        } catch (IllformedLocaleException e) {
+            return Optional.empty();
         }
-        catch (Exception e) {
-            return Locale.US;
-        }
+    }
+
+    public static <T> void syncAvailability(@NonNull Option<T> option, boolean available) {
+        T pending = option.pendingValue();
+        option.setAvailable(available);
+        option.requestSet(pending);
     }
 }

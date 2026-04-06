@@ -1,5 +1,7 @@
 package me.seagulll.worlddateformatter.integration;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import me.seagulll.worlddateformatter.WDFConfig;
 import me.seagulll.worlddateformatter.WDFConfigManager;
 import me.seagulll.worlddateformatter.WDFUtil;
@@ -13,27 +15,37 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 import java.time.ZonedDateTime;
-import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ConfigScreenProvider {
     public static Screen create(Screen parent) {
         WDFConfig config = WDFConfigManager.config;
         String defaultFormat = WDFConfig.DEFAULT_FORMAT;
         String defaultLocale = WDFConfig.DEFAULT_LOCALE;
-        List<String> locales = Minecraft.getInstance().getLanguageManager().getLanguages().keySet().stream().toList();
+        BiMap<String, String> localeMap = HashBiMap.create(Minecraft.getInstance().getLanguageManager().getLanguages().entrySet().stream()
+                .filter(entry -> WDFUtil.codeToLocale(entry.getKey()).isPresent())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getKey() + " / " + entry.getValue().toComponent().getString()
+                )));
+        BiMap<String, String> inverseLocaleMap = localeMap.inverse();
         ZonedDateTime now = ZonedDateTime.now();
 
         Option<String> locale = Option.<String>createBuilder()
                 .name(Component.translatable("text.worlddateformatter.config.option.locale"))
                 .description(OptionDescription.of(Component.translatable("text.worlddateformatter.config.option.locale.tooltip")))
-                .controller(option -> DropdownStringControllerBuilder.create(option).values(locales))
-                .binding(defaultLocale, config::getLocale, config::setLocale)
+                .controller(option -> DropdownStringControllerBuilder.create(option).values(localeMap.values().stream().toList()))
+                .binding(localeMap.getOrDefault(defaultLocale, defaultLocale),
+                        () -> Optional.ofNullable(localeMap.get(config.getLocale())).orElseGet(config::getLocale),
+                        value -> config.setLocale(inverseLocaleMap.getOrDefault(value, defaultLocale)))
                 .build();
         Option<String> format = Option.<String>createBuilder()
                 .name(Component.translatable("text.worlddateformatter.config.option.format"))
-                .description(value -> OptionDescription.of(WDFUtil.isValidFormat(value)
-                        ? Component.translatable("text.worlddateformatter.config.option.format.tooltip", now.format(WDFUtil.getFormatter(value, locale.pendingValue())))
-                        : Component.translatable("text.worlddateformatter.config.option.format.error", defaultFormat).withStyle(ChatFormatting.RED)))
+                .description(value -> OptionDescription.of(WDFUtil.safeFormat(now, value, inverseLocaleMap.getOrDefault(locale.pendingValue(), defaultLocale))
+                        .map(formatted -> Component.translatable("text.worlddateformatter.config.option.format.tooltip", formatted))
+                        .orElseGet(() -> Component.translatable("text.worlddateformatter.config.option.format.error", defaultFormat).withStyle(ChatFormatting.RED))))
                 .controller(StringControllerBuilder::create)
                 .binding(defaultFormat, config::getFormat, config::setFormat)
                 .build();
@@ -42,12 +54,8 @@ public class ConfigScreenProvider {
                 .controller(TickBoxControllerBuilder::create)
                 .binding(true, config::isEnabled, config::setEnabled)
                 .addListener((option, event) -> {
-                    String pendingFormat = format.pendingValue();
-                    format.setAvailable(option.pendingValue());
-                    format.requestSet(pendingFormat);
-                    String pendingLocale = locale.pendingValue();
-                    locale.setAvailable(option.pendingValue());
-                    locale.requestSet(pendingLocale);
+                    WDFUtil.syncAvailability(format, option.pendingValue());
+                    WDFUtil.syncAvailability(locale, option.pendingValue());
                 })
                 .build();
 
