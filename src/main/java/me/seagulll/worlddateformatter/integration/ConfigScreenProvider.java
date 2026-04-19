@@ -43,7 +43,7 @@ public class ConfigScreenProvider {
                 .build();
         Option<String> format = Option.<String>createBuilder()
                 .name(Component.translatable("text.worlddateformatter.config.option.format"))
-                .description(value -> OptionDescription.of(WDFUtil.safeFormat(now, value, inverseLocaleMap.getOrDefault(locale.pendingValue(), defaultLocale))
+                .description(value -> OptionDescription.of(WDFUtil.safeFormat(now, value, inverseLocaleMap.getOrDefault(locale.pendingValue(), locale.pendingValue()))
                         .map(formatted -> Component.translatable("text.worlddateformatter.config.option.format.tooltip", formatted))
                         .orElseGet(() -> Component.translatable("text.worlddateformatter.config.option.format.error", defaultFormat).withStyle(ChatFormatting.RED))))
                 .controller(StringControllerBuilder::create)
