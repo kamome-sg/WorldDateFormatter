@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 public class ConfigScreenProvider {
     public static Screen create(Screen parent) {
-        WDFConfig config = WDFConfigManager.config;
+        WDFConfig config = WDFConfigManager.load();
         String defaultFormat = WDFConfig.DEFAULT_FORMAT;
         String defaultLocale = WDFConfig.DEFAULT_LOCALE;
         BiMap<String, String> localeMap = HashBiMap.create(Minecraft.getInstance().getLanguageManager().getLanguages().entrySet().stream()
@@ -54,8 +54,8 @@ public class ConfigScreenProvider {
                 .controller(TickBoxControllerBuilder::create)
                 .binding(true, config::isEnabled, config::setEnabled)
                 .addListener((option, event) -> {
-                    WDFUtil.syncAvailability(format, option.pendingValue());
-                    WDFUtil.syncAvailability(locale, option.pendingValue());
+                    syncAvailability(format, option);
+                    syncAvailability(locale, option);
                 })
                 .build();
 
@@ -70,5 +70,11 @@ public class ConfigScreenProvider {
                 .save(WDFConfigManager::save)
                 .build()
                 .generateScreen(parent);
+    }
+
+    private static <T> void syncAvailability(Option<T> option, Option<Boolean> available) {
+        T pending = option.pendingValue();
+        option.setAvailable(available.pendingValue());
+        option.requestSet(pending);
     }
 }

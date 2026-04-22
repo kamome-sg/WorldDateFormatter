@@ -22,7 +22,7 @@ public abstract class WorldListEntryMixin {
 
     @ModifyVariable(method = "<init>", at = @At(value = "STORE", ordinal = 1), ordinal = 0)
     private String modify(String levelIdAndDate) {
-        WDFConfig config = WDFConfigManager.config;
+        WDFConfig config = WDFConfigManager.load();
         if (!config.isEnabled()) return levelIdAndDate;
         String string = summary.getLevelId();
         long lastPlayed = summary.getLastPlayed();

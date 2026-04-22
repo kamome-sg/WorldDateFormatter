@@ -1,8 +1,5 @@
 package me.seagulll.worlddateformatter;
 
-import dev.isxander.yacl3.api.Option;
-import org.jspecify.annotations.NonNull;
-
 import java.time.DateTimeException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,7 +12,7 @@ public final class WDFUtil {
         throw new AssertionError();
     }
 
-    public static Optional<String> safeFormat(@NonNull ZonedDateTime dateTime, String format, String localeCode) {
+    public static Optional<String> safeFormat(ZonedDateTime dateTime, String format, String localeCode) {
         try {
             return Optional.of(dateTime.format(DateTimeFormatter.ofPattern(format, codeToLocale(localeCode).orElse(Locale.US))));
         } catch (IllegalArgumentException | DateTimeException e) {
@@ -23,7 +20,7 @@ public final class WDFUtil {
         }
     }
 
-    public static Optional<Locale> codeToLocale(@NonNull String localeCode) {
+    public static Optional<Locale> codeToLocale(String localeCode) {
         try {
             return Optional.of(new Locale.Builder()
                     .setLanguageTag(localeCode.replace("_", "-"))
@@ -31,11 +28,5 @@ public final class WDFUtil {
         } catch (IllformedLocaleException e) {
             return Optional.empty();
         }
-    }
-
-    public static <T> void syncAvailability(@NonNull Option<T> option, boolean available) {
-        T pending = option.pendingValue();
-        option.setAvailable(available);
-        option.requestSet(pending);
     }
 }
