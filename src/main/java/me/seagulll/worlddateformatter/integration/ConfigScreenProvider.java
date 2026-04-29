@@ -13,6 +13,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Util;
 
 import java.time.ZonedDateTime;
 import java.util.Map;
@@ -35,7 +36,7 @@ public class ConfigScreenProvider {
 
         Option<String> locale = Option.<String>createBuilder()
                 .name(Component.translatable("text.worlddateformatter.config.option.locale"))
-                .description(OptionDescription.of(Component.translatable("text.worlddateformatter.config.option.locale.tooltip")))
+                .description(OptionDescription.of(Component.translatable("text.worlddateformatter.config.option.locale.description")))
                 .controller(option -> DropdownStringControllerBuilder.create(option).values(localeMap.values().stream().toList()))
                 .binding(localeMap.getOrDefault(defaultLocale, defaultLocale),
                         () -> Optional.ofNullable(localeMap.get(config.getLocale())).orElseGet(config::getLocale),
@@ -44,7 +45,7 @@ public class ConfigScreenProvider {
         Option<String> format = Option.<String>createBuilder()
                 .name(Component.translatable("text.worlddateformatter.config.option.format"))
                 .description(value -> OptionDescription.of(WDFUtil.safeFormat(now, value, inverseLocaleMap.getOrDefault(locale.pendingValue(), locale.pendingValue()))
-                        .map(formatted -> Component.translatable("text.worlddateformatter.config.option.format.tooltip", formatted))
+                        .map(formatted -> Component.translatable("text.worlddateformatter.config.option.format.description", formatted))
                         .orElseGet(() -> Component.translatable("text.worlddateformatter.config.option.format.error", defaultFormat).withStyle(ChatFormatting.RED))))
                 .controller(StringControllerBuilder::create)
                 .binding(defaultFormat, config::getFormat, config::setFormat)
@@ -59,6 +60,13 @@ public class ConfigScreenProvider {
                 })
                 .build();
 
+        ButtonOption openConfig = ButtonOption.createBuilder()
+                .name(Component.translatable("text.worlddateformatter.config.option.openconfig"))
+                .text(Component.translatable("text.worlddateformatter.config.option.openconfig.text"))
+                .description(OptionDescription.of(Component.translatable("text.worlddateformatter.config.option.openconfig.description")))
+                .action((yaclScreen, option) -> Util.getPlatform().openFile(WDFConfigManager.FILE))
+                .build();
+
         return YetAnotherConfigLib.createBuilder()
                 .title(Component.translatable("text.worlddateformatter.config.title"))
                 .category(ConfigCategory.createBuilder()
@@ -66,6 +74,10 @@ public class ConfigScreenProvider {
                         .option(isEnabled)
                         .option(format)
                         .option(locale)
+                        .build())
+                .category(ConfigCategory.createBuilder()
+                        .name(Component.translatable("text.worlddateformatter.config.category.misc"))
+                        .option(openConfig)
                         .build())
                 .save(WDFConfigManager::save)
                 .build()

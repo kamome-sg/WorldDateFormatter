@@ -3,8 +3,12 @@
   "text.worlddateformatter.config.category.general": "一般",
   "text.worlddateformatter.config.option.isenabled": "Modの有効化",
   "text.worlddateformatter.config.option.format": "日時フォーマット",
-  "text.worlddateformatter.config.option.format.tooltip": "プレビュー: %s\n\n詳しくはJavaのDateTimeFormatterクラスを参照してください。",
+  "text.worlddateformatter.config.option.format.description": "プレビュー: %s\n\n詳しくはJavaのDateTimeFormatterクラスを参照してください。",
   "text.worlddateformatter.config.option.format.error": "無効な形式です。入力は無視され、デフォルト値が使用されます。\n\n例: %s",
   "text.worlddateformatter.config.option.locale": "ロケール",
-  "text.worlddateformatter.config.option.locale.tooltip": "曜日の表示等に用いられるロケール（地域・言語）を設定します。一部のロケールはJavaに対応していない可能性があります。"
+  "text.worlddateformatter.config.option.locale.description": "曜日の表示等に用いられるロケール（地域・言語）を設定します。一部のロケールはJavaに対応していない可能性があります。",
+  "text.worlddateformatter.config.category.misc": "その他",
+  "text.worlddateformatter.config.option.openconfig": "設定を開く",
+  "text.worlddateformatter.config.option.openconfig.text": "開く",
+  "text.worlddateformatter.config.option.openconfig.description": "設定ファイルをデフォルトのアプリケーションで開きます。"
 }
