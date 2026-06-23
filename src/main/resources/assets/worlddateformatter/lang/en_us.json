@@ -1,14 +1,14 @@
 {
-  "text.worlddateformatter.config.title": "World Date Formatter Config",
-  "text.worlddateformatter.config.category.general": "General",
-  "text.worlddateformatter.config.option.isenabled": "Mod enabled",
-  "text.worlddateformatter.config.option.format": "Format",
-  "text.worlddateformatter.config.option.format.description": "Preview: %s\n\nPlease refer to the Java DateTimeFormatter class for further details.",
-  "text.worlddateformatter.config.option.format.error": "Invalid format. Input will be ignored and default value will be used. \n\nExample: %s",
-  "text.worlddateformatter.config.option.locale": "Locale",
-  "text.worlddateformatter.config.option.locale.description": "Locale settings for displaying days of the week, etc. Some locales may not be supported by Java.",
-  "text.worlddateformatter.config.category.misc": "Miscellaneous",
-  "text.worlddateformatter.config.option.openconfig": "Open config",
-  "text.worlddateformatter.config.option.openconfig.text": "Open",
-  "text.worlddateformatter.config.option.openconfig.description": "Open config file with default application."
+  "worlddateformatter.config.title": "World Date Formatter Config",
+  "worlddateformatter.config.category.general": "General",
+  "worlddateformatter.config.option.isenabled": "Mod enabled",
+  "worlddateformatter.config.option.format": "Format",
+  "worlddateformatter.config.option.format.description": "Preview: %s\n\nPlease refer to the Java DateTimeFormatter class for further details.",
+  "worlddateformatter.config.option.format.error": "Invalid format. Input will be ignored and default value will be used. \n\nExample: %s",
+  "worlddateformatter.config.option.locale": "Locale",
+  "worlddateformatter.config.option.locale.description": "Locale settings for displaying days of the week, etc. Some locales may not be supported by Java.",
+  "worlddateformatter.config.category.misc": "Miscellaneous",
+  "worlddateformatter.config.option.openconfig": "Open config",
+  "worlddateformatter.config.option.openconfig.text": "Open",
+  "worlddateformatter.config.option.openconfig.description": "Open config file with default application."
 }

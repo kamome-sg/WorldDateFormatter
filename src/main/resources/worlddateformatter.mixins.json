@@ -4,7 +4,8 @@
   "package": "me.seagulll.worlddateformatter.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "WorldListEntryMixin"
+    "WorldListEntryMixin",
+    "OptionImplAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
