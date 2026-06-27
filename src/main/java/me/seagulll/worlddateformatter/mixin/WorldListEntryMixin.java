@@ -18,9 +18,12 @@ import java.time.ZonedDateTime;
 public abstract class WorldListEntryMixin {
     @Shadow
     @Final
-    private LevelSummary summary;
+    /*? if >=26.1 >>*/private LevelSummary summary;
 
-    @ModifyVariable(method = "<init>", at = @At(value = "STORE", ordinal = 1), name = "levelIdAndDate")
+    @ModifyVariable(
+            method = "<init>", at = @At(value = "STORE", ordinal = 1),
+            /*? if >=26.1 {*/name = "levelIdAndDate"/*?} else {*//*ordinal = 0*//*?}*/
+    )
     private String modify(String levelIdAndDate) {
         WDFConfig config = WDFConfigManager.load();
         if (!config.isEnabled()) return levelIdAndDate;

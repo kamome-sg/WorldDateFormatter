@@ -1,0 +1,20 @@
+mod_id="worlddateformatter"
+mod_name="World Date Formatter"
+mod_version="1.2.5"
+mod_description="Custom date format for the last played date."
+mod_sources="https://github.com/kamome-sg/WorldDateFormatter"
+loader_version="0.19.2"
+maven_group="me.seagulll"
+loomx.loom_version="1.17-SNAPSHOT"
+
+["1.21.11"]
+mc_version="1.21.11"
+mc_version_range="1.21.11"
+modmenu_version="17.0.0"
+yacl_version="3.8.2+1.21.11-fabric"
+
+["26.1"]
+mc_version="26.1"
+mc_version_range=">=26.1"
+modmenu_version="18.0.0-alpha.8"
+yacl_version="3.9.2+26.1-fabric"

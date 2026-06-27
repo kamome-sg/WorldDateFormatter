@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "worlddateformatter",
+  "id": "${mod_id}",
   "version": "${version}",
-  "name": "World Date Formatter",
-  "description": "Custom date format for the last played date.",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
   "authors": ["Seagulll"],
   "contact": {
     "sources": "${mod_sources}",
@@ -25,8 +25,8 @@
     "worlddateformatter.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=${loader_version}",
-    "minecraft": ">=${minecraft_version}"
+    "minecraft": "${mc_version_range}",
+    "fabricloader": ">=${loader_version}"
   },
   "recommends": {
     "modmenu": "*",
