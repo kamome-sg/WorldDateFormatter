@@ -8,10 +8,6 @@ import java.util.Locale;
 import java.util.Optional;
 
 public final class WDFUtil {
-    private WDFUtil() {
-        throw new AssertionError();
-    }
-
     public static Optional<String> safeFormat(ZonedDateTime dateTime, String format, String localeCode) {
         try {
             return Optional.of(dateTime.format(DateTimeFormatter.ofPattern(format, codeToLocale(localeCode).orElse(Locale.US))));

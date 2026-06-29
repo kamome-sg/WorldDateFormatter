@@ -1,5 +1,6 @@
 package me.seagulll.worlddateformatter.mixin;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import me.seagulll.worlddateformatter.WDFConfig;
 import me.seagulll.worlddateformatter.WDFConfigManager;
 import me.seagulll.worlddateformatter.WDFUtil;
@@ -10,8 +11,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 
-import java.time.Instant;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @Mixin(WorldSelectionList.WorldListEntry.class)
@@ -24,13 +23,15 @@ public abstract class WorldListEntryMixin {
             method = "<init>", at = @At(value = "STORE", ordinal = 1),
             /*? if >=26.1 {*/name = "levelIdAndDate"/*?} else {*//*ordinal = 0*//*?}*/
     )
-    private String modify(String levelIdAndDate) {
+    private String modifyLevelIdAndDate(
+            String levelIdAndDate,
+            @Local(/*? if >=26.1 {*/name = "lastPlayed"/*?} else {*//*ordinal = 0*//*?}*/) long lastPlayed,
+            @Local(/*? if >=26.1 {*/name = "lastPlayedTime"/*?} else {*//*ordinal = 0*//*?}*/) ZonedDateTime lastPlayedTime
+    ) {
         WDFConfig config = WDFConfigManager.load();
         if (!config.isEnabled()) return levelIdAndDate;
         String string = summary.getLevelId();
-        long lastPlayed = summary.getLastPlayed();
         if (lastPlayed != -1L) {
-            ZonedDateTime lastPlayedTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(lastPlayed), ZoneId.systemDefault());
             String lastPlayedTimeText = WDFUtil.safeFormat(lastPlayedTime, config.getFormat(), config.getLocale())
                     .orElseGet(() -> WDFUtil.safeFormat(lastPlayedTime, WDFConfig.DEFAULT_FORMAT, WDFConfig.DEFAULT_LOCALE).orElse(""));
             if (!lastPlayedTimeText.isEmpty()) {
