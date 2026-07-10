@@ -9,6 +9,5 @@
   "worlddateformatter.config.option.locale.description": "Locale settings for displaying days of the week, etc. Some locales may not be supported by Java.",
   "worlddateformatter.config.category.misc": "Miscellaneous",
   "worlddateformatter.config.option.openconfig": "Open config",
-  "worlddateformatter.config.option.openconfig.text": "Open",
   "worlddateformatter.config.option.openconfig.description": "Open config file with default application."
 }

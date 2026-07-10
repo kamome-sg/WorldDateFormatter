@@ -10,6 +10,6 @@ public class WDF implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        WDFConfigManager.load();
+        WDFConfig.load();
     }
 }

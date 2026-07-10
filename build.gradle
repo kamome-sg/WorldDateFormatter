@@ -87,6 +87,16 @@ jar {
     }
 }
 
+// generate each jars in one folder
+tasks.withType(Jar).configureEach {
+    destinationDirectory = rootProject.layout.buildDirectory.dir("libs")
+}
+if (sc.current.parsed < "26.1") {
+    tasks.named("remapJar") {
+        destinationDirectory = rootProject.layout.buildDirectory.dir("libs")
+    }
+}
+
 // configure the maven publication
 publishing {
     publications {

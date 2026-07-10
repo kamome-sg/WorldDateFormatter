@@ -9,6 +9,5 @@
   "worlddateformatter.config.option.locale.description": "曜日の表示等に用いられるロケール（地域・言語）を設定します。一部のロケールはJavaに対応していない可能性があります。",
   "worlddateformatter.config.category.misc": "その他",
   "worlddateformatter.config.option.openconfig": "設定を開く",
-  "worlddateformatter.config.option.openconfig.text": "開く",
   "worlddateformatter.config.option.openconfig.description": "設定ファイルをデフォルトのアプリケーションで開きます。"
 }

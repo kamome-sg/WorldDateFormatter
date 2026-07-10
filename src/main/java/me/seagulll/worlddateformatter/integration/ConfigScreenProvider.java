@@ -3,7 +3,6 @@ package me.seagulll.worlddateformatter.integration;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import me.seagulll.worlddateformatter.WDFConfig;
-import me.seagulll.worlddateformatter.WDFConfigManager;
 import me.seagulll.worlddateformatter.WDFUtil;
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.DropdownStringControllerBuilder;
@@ -25,7 +24,7 @@ import java.util.stream.Collectors;
 
 public class ConfigScreenProvider {
     public static Screen create(Screen parent) {
-        WDFConfig config = WDFConfigManager.load();
+        WDFConfig config = WDFConfig.load();
         BiMap<String, String> localeToName = HashBiMap.create(Minecraft.getInstance().getLanguageManager().getLanguages().entrySet().stream()
                 .filter(entry -> WDFUtil.codeToLocale(entry.getKey()).isPresent())
                 .collect(Collectors.toMap(
@@ -71,9 +70,9 @@ public class ConfigScreenProvider {
 
         ButtonOption openConfig = ButtonOption.createBuilder()
                 .name(Component.translatable("worlddateformatter.config.option.openconfig"))
-                .text(Component.translatable("worlddateformatter.config.option.openconfig.text"))
+                .text(Component.empty())
                 .description(OptionDescription.of(Component.translatable("worlddateformatter.config.option.openconfig.description")))
-                .action((yaclScreen, option) -> Util.getPlatform().openFile(WDFConfigManager.FILE))
+                .action((yaclScreen, option) -> Util.getPlatform().openFile(WDFConfig.FILE))
                 .build();
 
         return YetAnotherConfigLib.createBuilder()
@@ -88,7 +87,7 @@ public class ConfigScreenProvider {
                         .name(Component.translatable("worlddateformatter.config.category.misc"))
                         .option(openConfig)
                         .build())
-                .save(WDFConfigManager::save)
+                .save(WDFConfig::save)
                 .build()
                 .generateScreen(parent);
     }

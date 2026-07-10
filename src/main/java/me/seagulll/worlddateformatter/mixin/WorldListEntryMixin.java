@@ -2,7 +2,6 @@ package me.seagulll.worlddateformatter.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import me.seagulll.worlddateformatter.WDFConfig;
-import me.seagulll.worlddateformatter.WDFConfigManager;
 import me.seagulll.worlddateformatter.WDFUtil;
 import net.minecraft.client.gui.screens.worldselection.WorldSelectionList;
 import net.minecraft.world.level.storage.LevelSummary;
@@ -28,7 +27,7 @@ public abstract class WorldListEntryMixin {
             @Local(/*? if >=26.1 {*/name = "lastPlayed"/*?} else {*//*ordinal = 0*//*?}*/) long lastPlayed,
             @Local(/*? if >=26.1 {*/name = "lastPlayedTime"/*?} else {*//*ordinal = 0*//*?}*/) ZonedDateTime lastPlayedTime
     ) {
-        WDFConfig config = WDFConfigManager.load();
+        WDFConfig config = WDFConfig.load();
         if (!config.isEnabled()) return levelIdAndDate;
         String string = summary.getLevelId();
         if (lastPlayed != -1L) {
